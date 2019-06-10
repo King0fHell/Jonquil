@@ -22,9 +22,6 @@ import cn.nukkit.inventory.CraftingManager;
 import cn.nukkit.inventory.Recipe;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.enchantment.Enchantment;
-import cn.nukkit.lang.BaseLang;
-import cn.nukkit.lang.TextContainer;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.level.EnumLevel;
 import cn.nukkit.level.GlobalBlockPalette;
 import cn.nukkit.level.Level;
@@ -175,8 +172,6 @@ public class Server {
     private int autoSaveTicker = 0;
     private int autoSaveTicks = 6000;
 
-    private BaseLang baseLang;
-
     private boolean forceLanguage = false;
 
     private UUID serverID;
@@ -201,6 +196,7 @@ public class Server {
     private final Map<Integer, String> identifier = new HashMap<>();
 
     private final Map<Integer, Level> levels = new HashMap<Integer, Level>() {
+
         public Level put(Integer key, Level value) {
             Level result = super.put(key, value);
             levelArray = levels.values().toArray(new Level[0]);
@@ -242,17 +238,11 @@ public class Server {
         instance = this;
 
         this.filePath = filePath;
-        if (!new File(dataPath + "worlds/").exists()) {
-            new File(dataPath + "worlds/").mkdirs();
-        }
+        if (!new File(dataPath + "worlds/").exists()) new File(dataPath + "worlds/").mkdirs();
 
-        if (!new File(dataPath + "players/").exists()) {
-            new File(dataPath + "players/").mkdirs();
-        }
+        if (!new File(dataPath + "players/").exists()) new File(dataPath + "players/").mkdirs();
 
-        if (!new File(pluginPath).exists()) {
-            new File(pluginPath).mkdirs();
-        }
+        if (!new File(pluginPath).exists()) new File(pluginPath).mkdirs();
 
         this.dataPath = new File(dataPath).getAbsolutePath() + "/";
         this.pluginPath = new File(pluginPath).getAbsolutePath() + "/";
@@ -263,12 +253,9 @@ public class Server {
 
 
         if (!new File(this.dataPath + "nukkit.yml").exists()) {
-            String language = "eng";
 
             InputStream advacedConf = this.getClass().getClassLoader().getResourceAsStream("nukkit.yml");
-            if (advacedConf == null) {
-                advacedConf = this.getClass().getClassLoader().getResourceAsStream("nukkit.yml");
-            }
+            if (advacedConf == null) advacedConf = this.getClass().getClassLoader().getResourceAsStream("nukkit.yml");
 
             try {
                 Utils.writeFile(this.dataPath + "nukkit.yml", advacedConf);
@@ -522,10 +509,6 @@ public class Server {
         return this.broadcast(message, BROADCAST_CHANNEL_USERS);
     }
 
-    public int broadcastMessage(TextContainer message) {
-        return this.broadcast(message, BROADCAST_CHANNEL_USERS);
-    }
-
     public int broadcastMessage(String message, CommandSender[] recipients) {
         for (CommandSender recipient : recipients) {
             recipient.sendMessage(message);
@@ -542,33 +525,7 @@ public class Server {
         return recipients.size();
     }
 
-    public int broadcastMessage(TextContainer message, Collection<? extends CommandSender> recipients) {
-        for (CommandSender recipient : recipients) {
-            recipient.sendMessage(message);
-        }
-
-        return recipients.size();
-    }
-
     public int broadcast(String message, String permissions) {
-        Set<CommandSender> recipients = new HashSet<>();
-
-        for (String permission : permissions.split(";")) {
-            for (Permissible permissible : this.pluginManager.getPermissionSubscriptions(permission)) {
-                if (permissible instanceof CommandSender && permissible.hasPermission(permission)) {
-                    recipients.add((CommandSender) permissible);
-                }
-            }
-        }
-
-        for (CommandSender recipient : recipients) {
-            recipient.sendMessage(message);
-        }
-
-        return recipients.size();
-    }
-
-    public int broadcast(TextContainer message, String permissions) {
         Set<CommandSender> recipients = new HashSet<>();
 
         for (String permission : permissions.split(";")) {
@@ -706,7 +663,7 @@ public class Server {
             return true;
         }
 
-        sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.unknown", commandLine));
+        sender.sendMessage(TextFormat.RED + "Unknown command. Try /help for a list of commands");
 
         return false;
     }
@@ -2177,7 +2134,7 @@ public class Server {
         Entity.registerEntity("TropicalFish", EntityTropicalFish.class);
         Entity.registerEntity("Turtle", EntityTurtle.class);
         Entity.registerEntity("Villager", EntityVillager.class);
-        Entity.registerEntity("VillagerV1", EntityVillagerV1.class);
+        Entity.registerEntity("VillagerV1", EntityVillager.class);
         Entity.registerEntity("WanderingTrader", EntityWanderingTrader.class);
         Entity.registerEntity("Wolf", EntityWolf.class);
         Entity.registerEntity("ZombieHorse", EntityZombieHorse.class);

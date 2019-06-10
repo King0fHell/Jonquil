@@ -2,10 +2,6 @@ package cn.nukkit.command.defaults;
 
 import cn.nukkit.command.Command;
 
-/**
- * author: MagicDroidX
- * Nukkit Project
- */
 public abstract class VanillaCommand extends Command {
 
     public VanillaCommand(String name) {

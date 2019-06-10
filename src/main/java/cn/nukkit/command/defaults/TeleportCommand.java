@@ -6,18 +6,13 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.event.player.PlayerTeleportEvent;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.level.Location;
 import cn.nukkit.math.NukkitMath;
 import cn.nukkit.utils.TextFormat;
 
-/**
- * Created on 2015/11/12 by Pub4Game and milkice.
- * Package cn.nukkit.command.defaults in project Nukkit .
- */
 public class TeleportCommand extends VanillaCommand {
     public TeleportCommand(String name) {
-        super(name, "%nukkit.command.tp.description", "%commands.tp.usage");
+        super(name, "Teleports the given player (or yourself) to another player or coordinates", "/tp [target player] <destination player> OR /tp [target player] <x> <y> <z> [<y-rot> <x-rot>]");
         this.setPermission("nukkit.command.teleport");
         this.commandParameters.clear();
         this.commandParameters.put("->Player", new CommandParameter[]{
@@ -42,7 +37,7 @@ public class TeleportCommand extends VanillaCommand {
             return true;
         }
         if (args.length < 1 || args.length > 6) {
-            sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+            sender.sendMessage("Usage: " + this.usageMessage);
             return true;
         }
         CommandSender target;
@@ -51,7 +46,7 @@ public class TeleportCommand extends VanillaCommand {
             if (sender instanceof Player) {
                 target = sender;
             } else {
-                sender.sendMessage(new TranslationContainer("commands.generic.ingame"));
+                sender.sendMessage("You can only perform this command as a player");
                 return true;
             }
             if (args.length == 1) {
@@ -78,7 +73,7 @@ public class TeleportCommand extends VanillaCommand {
         }
         if (args.length < 3) {
             ((Player) origin).teleport((Player) target, PlayerTeleportEvent.TeleportCause.COMMAND);
-            Command.broadcastCommandMessage(sender, new TranslationContainer("commands.tp.success", origin.getName(), target.getName()));
+            Command.broadcastCommandMessage(sender, "Teleported " + origin.getName() + " to " + target.getName());
             return true;
         } else if (((Player) target).getLevel() != null) {
             int pos;
@@ -99,7 +94,7 @@ public class TeleportCommand extends VanillaCommand {
                 yaw = ((Player) target).getYaw();
                 pitch = ((Player) target).getPitch();
             } catch (NumberFormatException e1) {
-                sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+                sender.sendMessage("Usage: " + this.usageMessage);
                 return true;
             }
             if (y < 0) y = 0;
@@ -109,10 +104,10 @@ public class TeleportCommand extends VanillaCommand {
                 pitch = Integer.parseInt(args[pos++]);
             }
             ((Player) target).teleport(new Location(x, y, z, yaw, pitch, ((Player) target).getLevel()), PlayerTeleportEvent.TeleportCause.COMMAND);
-            Command.broadcastCommandMessage(sender, new TranslationContainer("commands.tp.success.coordinates", target.getName(), String.valueOf(NukkitMath.round(x, 2)), String.valueOf(NukkitMath.round(y, 2)), String.valueOf(NukkitMath.round(z, 2))));
+            Command.broadcastCommandMessage(sender, "Teleported " + origin.getName() + " to " + target.getName() + ", (" + NukkitMath.round(x, 2) + ", " + NukkitMath.round(y, 2) + ", " + NukkitMath.round(z, 2) + ")");
             return true;
         }
-        sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+        sender.sendMessage("Usage: " + this.usageMessage);
         return true;
     }
 }

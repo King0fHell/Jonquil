@@ -5,7 +5,6 @@ import cn.nukkit.blockentity.BlockEntity;
 import cn.nukkit.blockentity.BlockEntityBed;
 import cn.nukkit.item.Item;
 import cn.nukkit.item.ItemBed;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.level.Level;
 import cn.nukkit.math.BlockFace;
 import cn.nukkit.math.Vector3;
@@ -14,10 +13,6 @@ import cn.nukkit.utils.BlockColor;
 import cn.nukkit.utils.DyeColor;
 import cn.nukkit.utils.Faceable;
 
-/**
- * author: MagicDroidX
- * Nukkit Project
- */
 public class BlockBed extends BlockTransparentMeta implements Faceable {
 
     public BlockBed() {
@@ -70,7 +65,7 @@ public class BlockBed extends BlockTransparentMeta implements Faceable {
         boolean isNight = (time >= Level.TIME_NIGHT && time < Level.TIME_SUNRISE);
 
         if (player != null && !isNight) {
-            player.sendMessage(new TranslationContainer("tile.bed.noSleep"));
+            player.sendMessage("noSleep");
             return true;
         }
 
@@ -93,7 +88,7 @@ public class BlockBed extends BlockTransparentMeta implements Faceable {
                 b = blockWest;
             } else {
                 if (player != null) {
-                    player.sendMessage(new TranslationContainer("tile.bed.notValid"));
+                    player.sendMessage("notValid");
                 }
 
                 return true;
@@ -101,7 +96,7 @@ public class BlockBed extends BlockTransparentMeta implements Faceable {
         }
 
         if (player != null && !player.sleepOn(b)) {
-            player.sendMessage(new TranslationContainer("tile.bed.occupied"));
+            player.sendMessage("occupied");
         }
 
 

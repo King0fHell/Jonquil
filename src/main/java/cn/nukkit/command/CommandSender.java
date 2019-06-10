@@ -1,7 +1,6 @@
 package cn.nukkit.command;
 
 import cn.nukkit.Server;
-import cn.nukkit.lang.TextContainer;
 import cn.nukkit.permission.Permissible;
 
 /**
@@ -27,15 +26,6 @@ public interface CommandSender extends Permissible {
      * @since Nukkit 1.0 | Nukkit API 1.0.0
      */
     void sendMessage(String message);
-
-    /**
-     * 给命令发送者返回信息。<br>
-     * Sends a message to the command sender.
-     *
-     * @param message 要发送的信息。<br>Message to send.
-     * @since Nukkit 1.0 | Nukkit API 1.0.0
-     */
-    void sendMessage(TextContainer message);
 
     /**
      * 返回命令发送者所在的服务器。<br>

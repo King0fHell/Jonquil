@@ -4,17 +4,12 @@ import cn.nukkit.Player;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.ConsoleCommandSender;
 import cn.nukkit.command.data.CommandParameter;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.utils.TextFormat;
 
-/**
- * Created on 2015/11/12 by xtypr.
- * Package cn.nukkit.command.defaults in project Nukkit .
- */
 public class SayCommand extends VanillaCommand {
 
     public SayCommand(String name) {
-        super(name, "%nukkit.command.say.description", "%commands.say.usage");
+        super(name, "Broadcasts the given message as the sender", "/say <text>");
         this.setPermission("nukkit.command.say");
         this.commandParameters.clear();
         this.commandParameters.put("default", new CommandParameter[]{
@@ -29,7 +24,7 @@ public class SayCommand extends VanillaCommand {
         }
 
         if (args.length == 0) {
-            sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+            sender.sendMessage("Usage: " + this.usageMessage);
             return false;
         }
 
@@ -51,9 +46,7 @@ public class SayCommand extends VanillaCommand {
         }
 
 
-        sender.getServer().broadcastMessage(new TranslationContainer(
-                TextFormat.LIGHT_PURPLE + "%chat.type.announcement",
-                senderString, TextFormat.LIGHT_PURPLE + msg));
+        sender.getServer().broadcastMessage(TextFormat.AQUA + senderString + TextFormat.GRAY + " >> " + TextFormat.WHITE + msg);
         return true;
     }
 }

@@ -3,8 +3,6 @@ package cn.nukkit.command;
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.command.data.*;
-import cn.nukkit.lang.TextContainer;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.permission.Permissible;
 import cn.nukkit.utils.TextFormat;
 import co.aikar.timings.Timing;
@@ -155,7 +153,7 @@ public abstract class Command {
         }
 
         if (this.permissionMessage == null) {
-            target.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.unknown", this.name));
+            target.sendMessage(TextFormat.RED + "Unknown command. Try /help for a list of commands");
         } else if (!this.permissionMessage.equals("")) {
             target.sendMessage(this.permissionMessage.replace("<permission>", this.permission));
         }
@@ -267,36 +265,9 @@ public abstract class Command {
     public static void broadcastCommandMessage(CommandSender source, String message, boolean sendToSource) {
         Set<Permissible> users = source.getServer().getPluginManager().getPermissionSubscriptions(Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
 
-        TranslationContainer result = new TranslationContainer("chat.type.admin", source.getName(), message);
+        String result = "[" + source.getName() + ": " + message + "]";
 
-        TranslationContainer colored = new TranslationContainer(TextFormat.GRAY + "" + TextFormat.ITALIC + "%chat.type.admin", source.getName(), message);
-
-        if (sendToSource && !(source instanceof ConsoleCommandSender)) {
-            source.sendMessage(message);
-        }
-
-        for (Permissible user : users) {
-            if (user instanceof CommandSender) {
-                if (user instanceof ConsoleCommandSender) {
-                    ((ConsoleCommandSender) user).sendMessage(result);
-                } else if (!user.equals(source)) {
-                    ((CommandSender) user).sendMessage(colored);
-                }
-            }
-        }
-    }
-
-    public static void broadcastCommandMessage(CommandSender source, TextContainer message) {
-        broadcastCommandMessage(source, message, true);
-    }
-
-    public static void broadcastCommandMessage(CommandSender source, TextContainer message, boolean sendToSource) {
-        TextContainer m = message.clone();
-
-        Set<Permissible> users = source.getServer().getPluginManager().getPermissionSubscriptions(Server.BROADCAST_CHANNEL_ADMINISTRATIVE);
-
-        TextContainer result = m.clone();
-        TextContainer colored = m.clone();
+        String colored = TextFormat.GRAY + "" + TextFormat.ITALIC + "[" + source.getName() + ": " + message + "]";
 
         if (sendToSource && !(source instanceof ConsoleCommandSender)) {
             source.sendMessage(message);

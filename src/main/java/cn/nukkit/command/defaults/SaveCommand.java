@@ -3,17 +3,12 @@ package cn.nukkit.command.defaults;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.level.Level;
 
-/**
- * Created on 2015/11/13 by xtypr.
- * Package cn.nukkit.command.defaults in project Nukkit .
- */
 public class SaveCommand extends VanillaCommand {
 
     public SaveCommand(String name) {
-        super(name, "%nukkit.command.save.description", "%commands.save.usage");
+        super(name, "Saves the server to disk", "/save-all");
         this.setPermission("nukkit.command.save.perform");
         this.commandParameters.clear();
     }
@@ -24,7 +19,7 @@ public class SaveCommand extends VanillaCommand {
             return true;
         }
 
-        Command.broadcastCommandMessage(sender, new TranslationContainer("commands.save.start"));
+        Command.broadcastCommandMessage(sender, "Saving...");
 
         for (Player player : sender.getServer().getOnlinePlayers().values()) {
             player.save();
@@ -34,7 +29,7 @@ public class SaveCommand extends VanillaCommand {
             level.save(true);
         }
 
-        Command.broadcastCommandMessage(sender, new TranslationContainer("commands.save.success"));
+        Command.broadcastCommandMessage(sender, "Saved the world");
         return true;
     }
 }

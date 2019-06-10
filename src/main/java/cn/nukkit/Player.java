@@ -41,8 +41,6 @@ import cn.nukkit.inventory.transaction.data.UseItemOnEntityData;
 import cn.nukkit.item.*;
 import cn.nukkit.item.enchantment.Enchantment;
 import cn.nukkit.item.food.Food;
-import cn.nukkit.lang.TextContainer;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.level.*;
 import cn.nukkit.level.format.FullChunk;
 import cn.nukkit.level.format.generic.BaseFullChunk;
@@ -274,8 +272,8 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.viewingEnderChest = chest;
     }
 
-    public TranslationContainer getLeaveMessage() {
-        return new TranslationContainer(TextFormat.YELLOW + "%multiplayer.player.left", this.getDisplayName());
+    public String getLeaveMessage() {
+       return TextFormat.YELLOW + this.getDisplayName() + " left the game";
     }
 
     public String getClientSecret() {
@@ -858,11 +856,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         this.sendPlayStatus(PlayStatusPacket.PLAYER_SPAWN);
 
-        PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(this,
-                new TranslationContainer(TextFormat.YELLOW + "%multiplayer.player.joined", new String[]{
-                        this.getDisplayName()
-                })
-        );
+        PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(this, TextFormat.YELLOW + this.getDisplayName() + "joined the game");
 
         this.server.getPluginManager().callEvent(playerJoinEvent);
 
@@ -2787,7 +2781,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                             break;
                         }
                         this.setGamemode(setPlayerGameTypePacket.gamemode, true);
-                        Command.broadcastCommandMessage(this, new TranslationContainer("commands.gamemode.success.self", Server.getGamemodeString(this.gamemode)));
+                        Command.broadcastCommandMessage(this, "Set own game mode to " + this.gamemode);
                     }
                     break;
                 case ProtocolInfo.ITEM_FRAME_DROP_ITEM_PACKET:
@@ -3301,9 +3295,10 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         return this.kick(reason, reason.toString(), isAdmin);
     }
 
+    @SuppressWarnings("deprecation")
     public boolean kick(PlayerKickEvent.Reason reason, String reasonString, boolean isAdmin) {
         PlayerKickEvent ev;
-        this.server.getPluginManager().callEvent(ev = new PlayerKickEvent(this, reason, this.getLeaveMessage()));
+        this.server.getPluginManager().callEvent(ev = new PlayerKickEvent(this, reason, "", this.getLeaveMessage()));
         if (!ev.isCancelled()) {
             String message;
             if (isAdmin) {
@@ -3347,15 +3342,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         pk.type = TextPacket.TYPE_RAW;
         pk.message = message;
         this.dataPacket(pk);
-    }
-
-    @Override
-    public void sendMessage(TextContainer message) {
-        if (message instanceof TranslationContainer) {
-            this.sendTranslation(message.getText(), ((TranslationContainer) message).getParameters());
-            return;
-        }
-        this.sendMessage(message.getText());
     }
 
     public void sendTranslation(String message) {
@@ -3485,18 +3471,6 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public void close(String message, String reason, boolean notify) {
-        this.close(new TextContainer(message), reason, notify);
-    }
-
-    public void close(TextContainer message) {
-        this.close(message, "generic");
-    }
-
-    public void close(TextContainer message, String reason) {
-        this.close(message, reason, true);
-    }
-
-    public void close(TextContainer message, String reason, boolean notify) {
         if (this.connected && !this.closed) {
             if (notify && reason.length() > 0) {
                 DisconnectPacket pk = new DisconnectPacket();
@@ -3549,7 +3523,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
             this.loggedIn = false;
 
-            if (ev != null && !Objects.equals(this.username, "") && this.spawned && !Objects.equals(ev.getQuitMessage().toString(), "")) {
+            if (ev != null && !Objects.equals(this.username, "") && this.spawned && !Objects.equals(ev.getQuitMessage(), "")) {
                 this.server.broadcastMessage(ev.getQuitMessage());
             }
 
@@ -3774,7 +3748,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         this.health = 0;
         this.scheduleUpdate();
 
-        PlayerDeathEvent ev = new PlayerDeathEvent(this, this.getDrops(), new TranslationContainer(message, params.toArray(new String[0])), this.getExperienceLevel());
+        PlayerDeathEvent ev = new PlayerDeathEvent(this, this.getDrops(), message + new String[0], this.getExperienceLevel());
 
         ev.setKeepExperience(this.level.gameRules.getBoolean(GameRule.KEEP_INVENTORY));
         ev.setKeepInventory(ev.getKeepExperience());

@@ -5,20 +5,15 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.ConsoleCommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.utils.TextFormat;
 
 import java.util.Map;
 import java.util.TreeMap;
 
-/**
- * author: MagicDroidX
- * Nukkit Project
- */
 public class HelpCommand extends VanillaCommand {
 
     public HelpCommand(String name) {
-        super(name, "%nukkit.command.help.description", "%commands.help.usage", new String[]{"?"});
+        super(name, "Shows the help menu", "/help [page|command name]", new String[]{"?"});
         this.setPermission("nukkit.command.help");
         this.commandParameters.clear();
         this.commandParameters.put("default", new CommandParameter[]{
@@ -44,11 +39,7 @@ public class HelpCommand extends VanillaCommand {
                 String[] newargs = new String[args.length - 1];
                 System.arraycopy(args, 0, newargs, 0, newargs.length);
                 args = newargs;
-                /*if (args.length > 1) {
-                    args = Arrays.copyOfRange(args, 0, args.length - 2);
-                } else {
-                    args = new String[0];
-                }*/
+
                 for (String arg : args) {
                     if (!command.equals("")) {
                         command += " ";
@@ -83,7 +74,7 @@ public class HelpCommand extends VanillaCommand {
                 pageNumber = 1;
             }
 
-            sender.sendMessage(new TranslationContainer("commands.help.header", String.valueOf(pageNumber), String.valueOf(totalPage)));
+            sender.sendMessage("--- Showing help page " + pageNumber + " of " + totalPage + " (/help <page>) ---");
             int i = 1;
             for (Command command1 : commands.values()) {
                 if (i >= (pageNumber - 1) * pageHeight + 1 && i <= Math.min(commands.size(), pageNumber * pageHeight)) {

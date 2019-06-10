@@ -4,13 +4,9 @@ import cn.nukkit.Server;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.ConsoleCommandSender;
-import cn.nukkit.lang.TranslationContainer;
 
 import java.lang.reflect.Method;
 
-/**
- * @author Tee7even
- */
 public class SimpleCommand extends Command {
     private Object object;
     private Method method;
@@ -38,12 +34,12 @@ public class SimpleCommand extends Command {
 
     public void sendUsageMessage(CommandSender sender) {
         if (!this.usageMessage.equals("")) {
-            sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+            sender.sendMessage("Usage: " + this.usageMessage);
         }
     }
 
     public void sendInGameMessage(CommandSender sender) {
-        sender.sendMessage(new TranslationContainer("commands.generic.ingame"));
+        sender.sendMessage("You can only perform this command as a player");
     }
 
     @Override

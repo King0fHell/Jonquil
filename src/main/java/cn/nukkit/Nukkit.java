@@ -46,60 +46,54 @@ public class Nukkit {
     public static boolean ANSI = true;
     public static boolean TITLE = false;
     public static int DEBUG = 1;
+    public static final String jonquil =
+            "     ____.                          .__.__   \n" +
+            "    |    | ____   ____   ________ __|__|  |  \n" +
+            "    |    |/  _ \\ /    \\ / ____/  |  \\  |  |  \n" +
+           "/\\__|    (  <_> )   |  < <_|  |  |  /  |  |__\n" +
+           "\\________|\\____/|___|  /\\__   |____/|__|____/\n" +
+           "                     \\/    |__|              \n" +
+           "                                 by Efters \n";
 
     public static void main(String[] args) {
 
         System.setProperty("java.net.preferIPv4Stack", "true");
         System.setProperty("log4j.skipJansi", "false");
-        String jonquil =
-                 "     ____.                          .__.__   \n" +
-                 "    |    | ____   ____   ________ __|__|  |  \n" +
-                 "    |    |/  _ \\ /    \\ / ____/  |  \\  |  |  \n" +
-                "/\\__|    (  <_> )   |  < <_|  |  |  /  |  |__\n" +
-              "\\________|\\____/|___|  /\\__   |____/|__|____/\n" +
-                "                     \\/    |__|              \n" +
-                "                                 by EftersTeam \n";
 
         System.out.println(jonquil);
 
         try {
-            if (TITLE) {
-                System.out.print((char) 0x1b + "]0;Nukkit is starting up..." + (char) 0x07);
-            }
+            if (TITLE) System.out.print((char) 0x1b + "]0;Nukkit is starting up..." + (char) 0x07);
             new Server(PATH, DATA_PATH, PLUGIN_PATH);
         } catch (Throwable t) {
                 log.throwing(t);
         }
 
-        if (TITLE) {
-            System.out.print((char) 0x1b + "]0;Stopping Server..." + (char) 0x07);
-        }
+        if (TITLE) System.out.print((char) 0x1b + "]0;Stopping Server..." + (char) 0x07);
+
         System.out.println("Stopping other threads...");
 
         for (Thread thread : java.lang.Thread.getAllStackTraces().keySet()) {
-            if (!(thread instanceof InterruptibleThread)) {
-                continue;
-            }
+
+            if (!(thread instanceof InterruptibleThread)) continue;
+
             log.debug("Stopping {} thread", thread.getClass().getSimpleName());
-            if (thread.isAlive()) {
-                thread.interrupt();
-            }
+            if (thread.isAlive()) thread.interrupt();
         }
 
         ServerKiller killer = new ServerKiller(8);
         killer.start();
 
-        if (TITLE) {
-            System.out.print((char) 0x1b + "]0;Server Stopped" + (char) 0x07);
-        }
+        if (TITLE) System.out.print((char) 0x1b + "]0;Server Stopped" + (char) 0x07);
+
         System.exit(0);
     }
 
     private static Properties getGitInfo() {
+
         InputStream gitFileStream = Nukkit.class.getClassLoader().getResourceAsStream("git.properties");
-        if (gitFileStream == null) {
-            return null;
-        }
+        if (gitFileStream == null) return null;
+
         Properties properties = new Properties();
         try {
             properties.load(gitFileStream);
@@ -110,16 +104,17 @@ public class Nukkit {
     }
 
     private static String getVersion() {
+
         StringBuilder version = new StringBuilder();
         version.append("git-");
         String commitId;
-        if (GIT_INFO == null || (commitId = GIT_INFO.getProperty("git.commit.id.abbrev")) == null) {
-            return version.append("null").toString();
-        }
+        if (GIT_INFO == null || (commitId = GIT_INFO.getProperty("git.commit.id.abbrev")) == null) return version.append("null").toString();
+
         return version.append(commitId).toString();
     }
 
     public static void setLogLevel(Level level) {
+
         Preconditions.checkNotNull(level, "level");
         LoggerContext ctx = (LoggerContext) LogManager.getContext(false);
         Configuration log4jConfig = ctx.getConfiguration();

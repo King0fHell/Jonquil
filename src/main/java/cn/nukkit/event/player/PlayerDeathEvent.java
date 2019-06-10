@@ -5,7 +5,6 @@ import cn.nukkit.event.Cancellable;
 import cn.nukkit.event.HandlerList;
 import cn.nukkit.event.entity.EntityDeathEvent;
 import cn.nukkit.item.Item;
-import cn.nukkit.lang.TextContainer;
 
 public class PlayerDeathEvent extends EntityDeathEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
@@ -14,19 +13,15 @@ public class PlayerDeathEvent extends EntityDeathEvent implements Cancellable {
         return handlers;
     }
 
-    private TextContainer deathMessage;
+    private String deathMessage;
     private boolean keepInventory = false;
     private boolean keepExperience = false;
     private int experience;
 
-    public PlayerDeathEvent(Player player, Item[] drops, TextContainer deathMessage, int experience) {
+    public PlayerDeathEvent(Player player, Item[] drops, String deathMessage, int experience) {
         super(player, drops);
         this.deathMessage = deathMessage;
         this.experience = experience;
-    }
-
-    public PlayerDeathEvent(Player player, Item[] drops, String deathMessage, int experience) {
-        this(player, drops, new TextContainer(deathMessage), experience);
     }
 
     @Override
@@ -34,16 +29,12 @@ public class PlayerDeathEvent extends EntityDeathEvent implements Cancellable {
         return (Player) super.getEntity();
     }
 
-    public TextContainer getDeathMessage() {
+    public String getDeathMessage() {
         return deathMessage;
     }
 
-    public void setDeathMessage(TextContainer deathMessage) {
-        this.deathMessage = deathMessage;
-    }
-
     public void setDeathMessage(String deathMessage) {
-        this.deathMessage = new TextContainer(deathMessage);
+        this.deathMessage = deathMessage;
     }
 
     public boolean getKeepInventory() {

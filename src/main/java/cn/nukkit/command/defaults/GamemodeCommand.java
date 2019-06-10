@@ -6,17 +6,12 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.utils.TextFormat;
 
-/**
- * Created on 2015/11/13 by xtypr.
- * Package cn.nukkit.command.defaults in project Nukkit .
- */
 public class GamemodeCommand extends VanillaCommand {
 
     public GamemodeCommand(String name) {
-        super(name, "%nukkit.command.gamemode.description", "%commands.gamemode.usage",
+        super(name, "Changes the player to a specific game mode", "/gamemode <mode> [player]",
                 new String[]{"gm"});
         this.setPermission("nukkit.command.gamemode.survival;" +
                 "nukkit.command.gamemode.creative;" +
@@ -38,7 +33,7 @@ public class GamemodeCommand extends VanillaCommand {
     @Override
     public boolean execute(CommandSender sender, String commandLabel, String[] args) {
         if (args.length == 0) {
-            sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+            sender.sendMessage("Usage: " + this.usageMessage);
             return false;
         }
 
@@ -53,15 +48,15 @@ public class GamemodeCommand extends VanillaCommand {
             if (sender.hasPermission("nukkit.command.gamemode.other")) {
                 target = sender.getServer().getPlayer(args[1]);
                 if (target == null) {
-                    sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.player.notFound"));
+                    sender.sendMessage(TextFormat.RED + "That player cannot be found");
                     return true;
                 }
             } else {
-                sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.permission"));
+                sender.sendMessage(TextFormat.RED + "You do not have permission to use this command");
                 return true;
             }
         } else if (!(sender instanceof Player)) {
-            sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+            sender.sendMessage("Usage: " + this.usageMessage);
             return true;
         }
 
@@ -69,7 +64,7 @@ public class GamemodeCommand extends VanillaCommand {
                 (gameMode == 1 && !sender.hasPermission("nukkit.command.gamemode.creative")) ||
                 (gameMode == 2 && !sender.hasPermission("nukkit.command.gamemode.adventure")) ||
                 (gameMode == 3 && !sender.hasPermission("nukkit.command.gamemode.spectator"))) {
-            sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.permission"));
+            sender.sendMessage(TextFormat.RED + "You do not have permission to use this command");
             return true;
         }
 
@@ -77,10 +72,10 @@ public class GamemodeCommand extends VanillaCommand {
             sender.sendMessage("Game mode update for " + target.getName() + " failed");
         } else {
             if (target.equals(sender)) {
-                Command.broadcastCommandMessage(sender, new TranslationContainer("commands.gamemode.success.self", Server.getGamemodeString(gameMode)));
+                Command.broadcastCommandMessage(sender, "Set own game mode to " + Server.getGamemodeString(gameMode));
             } else {
-                target.sendMessage(new TranslationContainer("gameMode.changed"));
-                Command.broadcastCommandMessage(sender, new TranslationContainer("commands.gamemode.success.other", target.getName(), Server.getGamemodeString(gameMode)));
+                target.sendMessage("gameMode.changed");
+                Command.broadcastCommandMessage(sender, "Set  " + target.getName() + "'s game mode to " + Server.getGamemodeString(gameMode));
             }
         }
 

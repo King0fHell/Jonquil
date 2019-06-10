@@ -6,14 +6,10 @@ import cn.nukkit.math.NukkitMath;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.ThreadCache;
 
-/**
- * Created on 2015/11/11 by xtypr.
- * Package cn.nukkit.command.defaults in project Nukkit .
- */
 public class GarbageCollectorCommand extends VanillaCommand {
 
     public GarbageCollectorCommand(String name) {
-        super(name, "%nukkit.command.gc.description", "%nukkit.command.gc.usage");
+        super(name, "Fires garbage collection tasks", "/gs");
         this.setPermission("nukkit.command.gc");
         this.commandParameters.clear();
     }

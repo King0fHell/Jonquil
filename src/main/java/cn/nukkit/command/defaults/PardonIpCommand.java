@@ -3,18 +3,13 @@ package cn.nukkit.command.defaults;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParameter;
-import cn.nukkit.lang.TranslationContainer;
 
 import java.util.regex.Pattern;
 
-/**
- * author: MagicDroidX
- * Nukkit Project
- */
 public class PardonIpCommand extends VanillaCommand {
 
     public PardonIpCommand(String name) {
-        super(name, "%nukkit.command.unban.ip.description", "%commands.unbanip.usage");
+        super(name, "Allows the specified IP address to use this server", "/pardon-ip <address>");
         this.setPermission("nukkit.command.unban.ip");
         this.setAliases(new String[]{"unbanip", "unban-ip", "pardonip"});
         this.commandParameters.clear();
@@ -30,7 +25,7 @@ public class PardonIpCommand extends VanillaCommand {
         }
 
         if (args.length != 1) {
-            sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+            sender.sendMessage("Usage: " + this.usageMessage);
 
             return false;
         }
@@ -41,10 +36,10 @@ public class PardonIpCommand extends VanillaCommand {
             sender.getServer().getIPBans().remove(value);
             sender.getServer().getNetwork().unblockAddress(value);
 
-            Command.broadcastCommandMessage(sender, new TranslationContainer("commands.unbanip.success", value));
+            Command.broadcastCommandMessage(sender, "Unbanned IP address " + value);
         } else {
 
-            sender.sendMessage(new TranslationContainer("commands.unbanip.invalid"));
+            sender.sendMessage("You have entered an invalid IP address");
         }
 
         return true;

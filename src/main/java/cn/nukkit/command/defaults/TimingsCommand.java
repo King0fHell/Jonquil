@@ -2,18 +2,13 @@ package cn.nukkit.command.defaults;
 
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParameter;
-import cn.nukkit.lang.TranslationContainer;
 import co.aikar.timings.Timings;
 import co.aikar.timings.TimingsExport;
 
-/**
- * @author fromgate
- * @author Pub4Game
- */
 public class TimingsCommand extends VanillaCommand {
 
     public TimingsCommand(String name) {
-        super(name, "%nukkit.command.timings.description", "%nukkit.command.timings.usage");
+        super(name, "Records timings to see performance of the server.", "/timings <reset|report/paste|on|off|verbon|verboff>");
         this.setPermission("nukkit.command.timings");
         this.commandParameters.clear();
         this.commandParameters.put("default", new CommandParameter[]{
@@ -28,7 +23,7 @@ public class TimingsCommand extends VanillaCommand {
         }
 
         if (args.length != 1) {
-            sender.sendMessage(new TranslationContainer("commands.generic.usage", usageMessage));
+            sender.sendMessage("Usage: " + usageMessage);
             return true;
         }
 
@@ -37,31 +32,31 @@ public class TimingsCommand extends VanillaCommand {
         if (mode.equals("on")) {
             Timings.setTimingsEnabled(true);
             Timings.reset();
-            sender.sendMessage(new TranslationContainer("nukkit.command.timings.enable"));
+            sender.sendMessage("Enabled timings and reset");
             return true;
         } else if (mode.equals("off")) {
             Timings.setTimingsEnabled(false);
-            sender.sendMessage(new TranslationContainer("nukkit.command.timings.disable"));
+            sender.sendMessage("Disable timings");
             return true;
         }
 
         if (!Timings.isTimingsEnabled()) {
-            sender.sendMessage(new TranslationContainer("nukkit.command.timings.timingsDisabled"));
+            sender.sendMessage("Please enable timings by typing /timings on");
             return true;
         }
 
         switch (mode) {
             case "verbon":
-                sender.sendMessage(new TranslationContainer("nukkit.command.timings.verboseEnable"));
+                sender.sendMessage("Enabled verbose timings");
                 Timings.setVerboseEnabled(true);
                 break;
             case "verboff":
-                sender.sendMessage(new TranslationContainer("nukkit.command.timings.verboseDisable"));
+                sender.sendMessage("Disabled verbose timings");
                 Timings.setVerboseEnabled(true);
                 break;
             case "reset":
                 Timings.reset();
-                sender.sendMessage(new TranslationContainer("nukkit.command.timings.reset"));
+                sender.sendMessage("Timings reset");
                 break;
             case "report":
             case "paste":

@@ -53,7 +53,7 @@ public class AddEntityPacket extends DataPacket {
             .put(EntityPanda.NETWORK_ID, "minecraft:panda")
             .put(EntitySalmon.NETWORK_ID, "minecraft:salmon")
             .put(EntityPig.NETWORK_ID, "minecraft:pig")
-            .put(EntityVillagerV1.NETWORK_ID, "minecraft:villager")
+            .put(EntityVillager.NETWORK_ID, "minecraft:villager")
             .put(EntityCod.NETWORK_ID, "minecraft:cod")
             .put(EntityPufferfish.NETWORK_ID, "minecraft:pufferfish")
             .put(EntityCow.NETWORK_ID, "minecraft:cow")

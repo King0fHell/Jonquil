@@ -1,8 +1,6 @@
 package cn.nukkit.command;
 
 import cn.nukkit.Server;
-import cn.nukkit.lang.BaseLang;
-import cn.nukkit.lang.TextContainer;
 import cn.nukkit.permission.PermissibleBase;
 import cn.nukkit.permission.Permission;
 import cn.nukkit.permission.PermissionAttachment;
@@ -89,16 +87,6 @@ public class ConsoleCommandSender implements CommandSender {
             MainLogger.getLogger().info(line);
         }
     }
-
-    @Override
-    public void sendMessage(TextContainer message) {
-        MainLogger.getLogger().info(message.toString());
-    }
-
-    //  @Override
-  //  public void sendMessage(TextContainer message) {
-   //     sendMessage(message);
-   // }
 
     @Override
     public String getName() {

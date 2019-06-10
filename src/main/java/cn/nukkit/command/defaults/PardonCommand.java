@@ -4,16 +4,11 @@ import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
-import cn.nukkit.lang.TranslationContainer;
 
-/**
- * author: MagicDroidX
- * Nukkit Project
- */
 public class PardonCommand extends VanillaCommand {
 
     public PardonCommand(String name) {
-        super(name, "%nukkit.command.unban.player.description", "%commands.unban.usage");
+        super(name, "Allows the specified player to use this server", "/pardon-ip <address>");
         this.setPermission("nukkit.command.unban.player");
         this.setAliases(new String[]{"unban"});
         this.commandParameters.clear();
@@ -29,14 +24,14 @@ public class PardonCommand extends VanillaCommand {
         }
 
         if (args.length != 1) {
-            sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+            sender.sendMessage("Usage: " + this.usageMessage);
 
             return false;
         }
 
         sender.getServer().getNameBans().remove(args[0]);
 
-        Command.broadcastCommandMessage(sender, new TranslationContainer("%commands.unban.success", args[0]));
+        Command.broadcastCommandMessage(sender, "Unbanned player " + args[0]);
 
         return true;
     }

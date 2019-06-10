@@ -1,17 +1,12 @@
 package cn.nukkit.command;
 
 import cn.nukkit.Server;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.TextFormat;
 
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * author: MagicDroidX
- * Nukkit Project
- */
 public class FormattedCommandAlias extends Command {
 
     private final String[] formatStrings;
@@ -37,7 +32,7 @@ public class FormattedCommandAlias extends Command {
                 if (e instanceof IllegalArgumentException) {
                     sender.sendMessage(TextFormat.RED + e.getMessage());
                 } else {
-                    sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.exception"));
+                    sender.sendMessage(TextFormat.RED + "An unknown error occurred while attempting to perform this command");
                     MainLogger logger = sender.getServer().getLogger();
                     if (logger != null) {
                         logger.logException(e);

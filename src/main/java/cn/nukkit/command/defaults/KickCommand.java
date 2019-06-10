@@ -6,17 +6,12 @@ import cn.nukkit.command.CommandSender;
 import cn.nukkit.command.data.CommandParamType;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.event.player.PlayerKickEvent;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.utils.TextFormat;
 
-/**
- * Created on 2015/11/11 by xtypr.
- * Package cn.nukkit.command.defaults in project Nukkit .
- */
 public class KickCommand extends VanillaCommand {
 
     public KickCommand(String name) {
-        super(name, "%nukkit.command.kick.description", "%commands.kick.usage");
+        super(name, "Removes the specified player from the server", "/kick <player> [reason ...]");
         this.setPermission("nukkit.command.kick");
         this.commandParameters.clear();
         this.commandParameters.put("default", new CommandParameter[]{
@@ -31,7 +26,7 @@ public class KickCommand extends VanillaCommand {
             return true;
         }
         if (args.length == 0) {
-            sender.sendMessage(new TranslationContainer("commands.generic.usage", this.usageMessage));
+            sender.sendMessage("Usage: " + this.usageMessage);
             return false;
         }
 
@@ -50,13 +45,12 @@ public class KickCommand extends VanillaCommand {
         if (player != null) {
             player.kick(PlayerKickEvent.Reason.KICKED_BY_ADMIN, reason);
             if (reason.length() >= 1) {
-                Command.broadcastCommandMessage(sender, new TranslationContainer("commands.kick.success.reason", player.getName(), reason)
-                );
+                Command.broadcastCommandMessage(sender, "Kicked "  + player.getName() + " from the game: '" + reason + "'");
             } else {
-                Command.broadcastCommandMessage(sender, new TranslationContainer("commands.kick.success", player.getName()));
+                Command.broadcastCommandMessage(sender, "Kicked " + player.getName() + " from the game");
             }
         } else {
-            sender.sendMessage(new TranslationContainer(TextFormat.RED + "%commands.generic.player.notFound"));
+            sender.sendMessage(TextFormat.RED + "That player cannot be found");
         }
 
         return true;

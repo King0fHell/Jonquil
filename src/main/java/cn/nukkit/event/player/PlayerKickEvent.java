@@ -3,7 +3,6 @@ package cn.nukkit.event.player;
 import cn.nukkit.Player;
 import cn.nukkit.event.Cancellable;
 import cn.nukkit.event.HandlerList;
-import cn.nukkit.lang.TextContainer;
 
 public class PlayerKickEvent extends PlayerEvent implements Cancellable {
     private static final HandlerList handlers = new HandlerList();
@@ -30,30 +29,13 @@ public class PlayerKickEvent extends PlayerEvent implements Cancellable {
         return handlers;
     }
 
-    protected TextContainer quitMessage;
+    protected String quitMessage;
 
     protected final Reason reason;
     protected final String reasonString;
 
     @Deprecated
-    public PlayerKickEvent(Player player, String reason, String quitMessage) {
-        this(player, Reason.UNKNOWN, reason, new TextContainer(quitMessage));
-    }
-
-    @Deprecated
-    public PlayerKickEvent(Player player, String reason, TextContainer quitMessage) {
-        this(player, Reason.UNKNOWN, reason, quitMessage);
-    }
-
-    public PlayerKickEvent(Player player, Reason reason, TextContainer quitMessage) {
-        this(player, reason, reason.toString(), quitMessage);
-    }
-
-    public PlayerKickEvent(Player player, Reason reason, String quitMessage) {
-        this(player, reason, new TextContainer(quitMessage));
-    }
-
-    public PlayerKickEvent(Player player, Reason reason, String reasonString, TextContainer quitMessage) {
+    public PlayerKickEvent(Player player, Reason reason, String reasonString, String quitMessage) {
         this.player = player;
         this.quitMessage = quitMessage;
         this.reason = reason;
@@ -68,15 +50,13 @@ public class PlayerKickEvent extends PlayerEvent implements Cancellable {
         return this.reason;
     }
 
-    public TextContainer getQuitMessage() {
+    public String getQuitMessage() {
         return quitMessage;
     }
 
-    public void setQuitMessage(TextContainer quitMessage) {
+    @Deprecated
+    public void setQuitMessage(String quitMessage) {
         this.quitMessage = quitMessage;
     }
 
-    public void setQuitMessage(String joinMessage) {
-        this.setQuitMessage(new TextContainer(joinMessage));
-    }
 }

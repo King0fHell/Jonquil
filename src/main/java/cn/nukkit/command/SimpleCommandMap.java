@@ -4,7 +4,6 @@ import cn.nukkit.Server;
 import cn.nukkit.command.data.CommandParameter;
 import cn.nukkit.command.defaults.*;
 import cn.nukkit.command.simple.*;
-import cn.nukkit.lang.TranslationContainer;
 import cn.nukkit.utils.MainLogger;
 import cn.nukkit.utils.TextFormat;
 import cn.nukkit.utils.Utils;
@@ -14,10 +13,6 @@ import java.util.*;
 import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
-/**
- * author: MagicDroidX
- * Nukkit Project
- */
 public class SimpleCommandMap implements CommandMap {
     protected final Map<String, Command> knownCommands = new HashMap<>();
 
@@ -29,44 +24,27 @@ public class SimpleCommandMap implements CommandMap {
     }
 
     private void setDefaultCommands() {
-        this.register("nukkit", new VersionCommand("version"));
-        this.register("nukkit", new PluginsCommand("plugins"));
-        this.register("nukkit", new SeedCommand("seed"));
         this.register("nukkit", new HelpCommand("help"));
         this.register("nukkit", new StopCommand("stop"));
-        this.register("nukkit", new TellCommand("tell"));
-        this.register("nukkit", new DefaultGamemodeCommand("defaultgamemode"));
         this.register("nukkit", new BanCommand("ban"));
         this.register("nukkit", new BanIpCommand("ban-ip"));
         this.register("nukkit", new BanListCommand("banlist"));
         this.register("nukkit", new PardonCommand("pardon"));
         this.register("nukkit", new PardonIpCommand("pardon-ip"));
         this.register("nukkit", new SayCommand("say"));
-        this.register("nukkit", new MeCommand("me"));
-        this.register("nukkit", new ListCommand("list"));
-        this.register("nukkit", new DifficultyCommand("difficulty"));
         this.register("nukkit", new KickCommand("kick"));
         this.register("nukkit", new OpCommand("op"));
         this.register("nukkit", new DeopCommand("deop"));
         this.register("nukkit", new WhitelistCommand("whitelist"));
-        this.register("nukkit", new SaveOnCommand("save-on"));
-        this.register("nukkit", new SaveOffCommand("save-off"));
         this.register("nukkit", new SaveCommand("save-all"));
         this.register("nukkit", new GiveCommand("give"));
-        this.register("nukkit", new EffectCommand("effect"));
-        this.register("nukkit", new EnchantCommand("enchant"));
-        this.register("nukkit", new ParticleCommand("particle"));
         this.register("nukkit", new GamemodeCommand("gamemode"));
-        this.register("nukkit", new GameruleCommand("gamerule"));
         this.register("nukkit", new KillCommand("kill"));
-        this.register("nukkit", new SpawnpointCommand("spawnpoint"));
         this.register("nukkit", new SetWorldSpawnCommand("setworldspawn"));
         this.register("nukkit", new TeleportCommand("tp"));
         this.register("nukkit", new TimeCommand("time"));
-        this.register("nukkit", new TitleCommand("title"));
         this.register("nukkit", new ReloadCommand("reload"));
         this.register("nukkit", new WeatherCommand("weather"));
-        this.register("nukkit", new XpCommand("xp"));
 
 //        if ((boolean) this.server.getConfig("debug.commands", false)) {
         this.register("nukkit", new StatusCommand("status"));
@@ -256,7 +234,7 @@ public class SimpleCommandMap implements CommandMap {
         try {
             target.execute(sender, sentCommandLabel, args);
         } catch (Exception e) {
-            sender.sendMessage(new TranslationContainer(TextFormat.RED + "An unknown error occurred while attempting to perform this command"));
+            sender.sendMessage(TextFormat.RED + "An unknown error occurred while attempting to perform this command");
             this.server.getLogger().critical("Unhandled exception executing command " + cmdLine + " in " + target.toString() + ":" + Utils.getExceptionMessage(e));
             MainLogger logger = sender.getServer().getLogger();
             if (logger != null) {

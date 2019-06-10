@@ -12,10 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Objects;
 
-/**
- * Created on 2015/11/11 by xtypr.
- * Package cn.nukkit.command.defaults in project Nukkit .
- */
 public class StatusCommand extends VanillaCommand {
     private static final DateFormat format = new SimpleDateFormat("'" + TextFormat.RED + "'d'" + TextFormat.GOLD + " days " +
             TextFormat.RED + "'H'" + TextFormat.GOLD + " hours " +
@@ -23,7 +19,7 @@ public class StatusCommand extends VanillaCommand {
             TextFormat.RED + "'s'" + TextFormat.GOLD + " seconds'");
 
     public StatusCommand(String name) {
-        super(name, "%nukkit.command.status.description", "%nukkit.command.status.usage");
+        super(name, "Reads back the server's performance.", "/status");
         this.setPermission("nukkit.command.status");
         this.commandParameters.clear();
     }
