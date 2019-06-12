@@ -17,12 +17,4 @@ public class PlayerJoinEvent extends PlayerEvent {
         this.joinMessage = joinMessage;
     }
 
-    public String getJoinMessage() {
-        return joinMessage;
-    }
-
-    public void setJoinMessage(String joinMessage) {
-        this.joinMessage = joinMessage;
-    }
-
 }

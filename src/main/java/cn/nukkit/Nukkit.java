@@ -27,10 +27,11 @@ import java.util.Properties;
  *                      \/    |__|
  */
 
-@Log4j2
+//@Log4j2
 public class Nukkit {
 
     public final static Properties GIT_INFO = getGitInfo();
+    public final static MainLogger log = MainLogger.getLogger();
     public final static String VERSION = getVersion();
     public final static String API_VERSION = "1.0.0";
     public final static String CODENAME = "";
@@ -66,7 +67,7 @@ public class Nukkit {
             if (TITLE) System.out.print((char) 0x1b + "]0;Nukkit is starting up..." + (char) 0x07);
             new Server(PATH, DATA_PATH, PLUGIN_PATH);
         } catch (Throwable t) {
-                log.throwing(t);
+                log.logException(t);
         }
 
         if (TITLE) System.out.print((char) 0x1b + "]0;Stopping Server..." + (char) 0x07);
@@ -77,7 +78,7 @@ public class Nukkit {
 
             if (!(thread instanceof InterruptibleThread)) continue;
 
-            log.debug("Stopping {} thread", thread.getClass().getSimpleName());
+            log.debug("Stopping " + thread.getClass().getSimpleName() + " thread");
             if (thread.isAlive()) thread.interrupt();
         }
 

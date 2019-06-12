@@ -273,7 +273,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
     }
 
     public String getLeaveMessage() {
-       return TextFormat.YELLOW + this.getDisplayName() + " left the game";
+       return TextFormat.YELLOW + this.getDisplayName() + " left the game.";
     }
 
     public String getClientSecret() {
@@ -856,13 +856,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
         this.sendPlayStatus(PlayStatusPacket.PLAYER_SPAWN);
 
-        PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(this, TextFormat.YELLOW + this.getDisplayName() + "joined the game");
+        PlayerJoinEvent playerJoinEvent = new PlayerJoinEvent(this, TextFormat.YELLOW + this.getDisplayName() + " joined the game.");
 
         this.server.getPluginManager().callEvent(playerJoinEvent);
-
-        if (playerJoinEvent.getJoinMessage().toString().trim().length() > 0) {
-            this.server.broadcastMessage(playerJoinEvent.getJoinMessage());
-        }
 
         this.noDamageTicks = 60;
 
@@ -1885,7 +1881,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
                 Server.getInstance().getLogger().warning("Could not delete legacy player data for " + this.username);
             }
         } else {
-            nbt = this.server.getOfflinePlayerData(this.uuid);
+            nbt = this.server.getOfflinePlayerData(this.getName());
         }
 
         if (nbt == null) {
@@ -1953,7 +1949,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
         nbt.putLong("UUIDMost", uuid.getMostSignificantBits());
 
         if (this.server.getAutoSave()) {
-            this.server.saveOfflinePlayerData(this.uuid, nbt, true);
+            this.server.saveOfflinePlayerData(this.getName(), nbt, true);
         }
 
         this.sendPlayStatus(PlayStatusPacket.LOGIN_SUCCESS);
@@ -3523,13 +3519,9 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
 
             this.loggedIn = false;
 
-            if (ev != null && !Objects.equals(this.username, "") && this.spawned && !Objects.equals(ev.getQuitMessage(), "")) {
-                this.server.broadcastMessage(ev.getQuitMessage());
-            }
-
             this.server.getPluginManager().unsubscribeFromPermission(Server.BROADCAST_CHANNEL_USERS, this);
             this.spawned = false;
-            this.server.getLogger().info("logged out due to" + TextFormat.AQUA + (this.getName() == null ? "" : this.getName()) + TextFormat.WHITE + reason);
+            this.server.getLogger().info(TextFormat.AQUA + (this.getName() == null ? "" : this.getName()) + TextFormat.RESET + " logged out due to | " + TextFormat.WHITE + reason);
             this.windows.clear();
             this.usedChunks.clear();
             this.loadQueue.clear();
@@ -3596,7 +3588,7 @@ public class Player extends EntityHuman implements CommandSender, InventoryHolde
             this.namedTag.putFloat("foodSaturationLevel", this.getFoodData().getFoodSaturationLevel());
 
             if (!this.username.isEmpty() && this.namedTag != null) {
-                this.server.saveOfflinePlayerData(this.uuid, this.namedTag, async);
+                this.server.saveOfflinePlayerData(this.getName(), this.namedTag, async);
             }
         }
     }

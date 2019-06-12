@@ -12,15 +12,13 @@ import cn.nukkit.utils.Binary;
 import com.google.common.collect.ImmutableMap;
 import lombok.ToString;
 
-/**
- * author: MagicDroidX
- * Nukkit Project
- */
 @ToString
 public class AddEntityPacket extends DataPacket {
+
     public static final byte NETWORK_ID = ProtocolInfo.ADD_ENTITY_PACKET;
 
     public static ImmutableMap<Integer, String> LEGACY_IDS = ImmutableMap.<Integer, String>builder()
+
             .put(51, "minecraft:npc")
             .put(63, "minecraft:player")
             .put(EntityWitherSkeleton.NETWORK_ID, "minecraft:wither_skeleton")
@@ -53,7 +51,6 @@ public class AddEntityPacket extends DataPacket {
             .put(EntityPanda.NETWORK_ID, "minecraft:panda")
             .put(EntitySalmon.NETWORK_ID, "minecraft:salmon")
             .put(EntityPig.NETWORK_ID, "minecraft:pig")
-            .put(EntityVillager.NETWORK_ID, "minecraft:villager")
             .put(EntityCod.NETWORK_ID, "minecraft:cod")
             .put(EntityPufferfish.NETWORK_ID, "minecraft:pufferfish")
             .put(EntityCow.NETWORK_ID, "minecraft:cow")
@@ -128,7 +125,7 @@ public class AddEntityPacket extends DataPacket {
 
     @Override
     public byte pid() {
-        return NETWORK_ID;
+        return ProtocolInfo.ADD_ENTITY_PACKET;
     }
 
     public long entityUniqueId;
@@ -150,7 +147,6 @@ public class AddEntityPacket extends DataPacket {
 
     @Override
     public void decode() {
-
     }
 
     @Override
@@ -158,17 +154,15 @@ public class AddEntityPacket extends DataPacket {
         this.reset();
         this.putEntityUniqueId(this.entityUniqueId);
         this.putEntityRuntimeId(this.entityRuntimeId);
-        if (id == null) {
-            id = LEGACY_IDS.get(type);
-        }
+            if (id == null) {
+                id = LEGACY_IDS.get(type);
+            }
         this.putString(this.id);
         this.putVector3f(this.x, this.y, this.z);
         this.putVector3f(this.speedX, this.speedY, this.speedZ);
         this.putLFloat(this.pitch);
         this.putLFloat(this.yaw);
-        this.putLFloat(this.headYaw);
         this.putAttributeList(this.attributes);
-        this.put(Binary.writeMetadata(this.metadata));
         this.putUnsignedVarInt(this.links.length);
         for (EntityLink link : links) {
             putEntityLink(link);

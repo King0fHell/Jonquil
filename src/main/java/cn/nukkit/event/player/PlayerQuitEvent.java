@@ -30,10 +30,6 @@ public class PlayerQuitEvent extends PlayerEvent {
         this.reason = reason;
     }
 
-    public String getQuitMessage() {
-        return quitMessage;
-    }
-
     public boolean getAutoSave() {
         return this.autoSave;
     }

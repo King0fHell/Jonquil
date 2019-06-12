@@ -12,11 +12,15 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class NukkitConsole extends SimpleTerminalConsole {
     private final Server server;
     private final BlockingQueue<String> consoleQueue = new LinkedBlockingQueue<>();
     private AtomicBoolean executingCommands = new AtomicBoolean(false);
+
+    public NukkitConsole(Server server) {
+        this.server = server;
+    }
 
     @Override
     protected boolean isRunning() {

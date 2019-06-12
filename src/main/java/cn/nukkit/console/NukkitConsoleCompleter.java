@@ -12,9 +12,13 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.function.Consumer;
 
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 public class NukkitConsoleCompleter implements Completer {
     private final Server server;
+
+    NukkitConsoleCompleter(Server server) {
+        this.server = server;
+    }
 
     @Override
     public void complete(LineReader lineReader, ParsedLine parsedLine, List<Candidate> candidates) {
